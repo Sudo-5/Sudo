@@ -22,6 +22,7 @@ const questions = require("./routes/Questions");
 const tag = require("./routes/Tag");
 const post = require("./routes/Post");
 const video = require("./routes/Videos");
+const learningpath = require("./routes/LearningPath");
 
 // * DB
 mongoose.connect(
@@ -49,6 +50,7 @@ app.use("/api/questions", questions);
 app.use("/api/tag", tag);
 app.use("/api/post", post);
 app.use("/api/videos", video);
+app.use("/api/learning-path", learningpath);
 
 // * Server
 const port = process.env.PORT || 5000;

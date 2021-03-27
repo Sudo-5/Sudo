@@ -11,6 +11,7 @@
     "node": "12.16.1"
   },
   "dependencies": {
+    "@varandas/fetch-readme": "^1.0.8",
     "aws-sdk": "^2.874.0",
     "cloudinary": "^1.23.0",
     "cloudinary-multer": "^1.0.2",
