@@ -59,7 +59,7 @@ const Routes = () => {
         <Route exact path="/articles" component={Articles} isPrivate />
         <Route
           exact
-          path="/learningpath/id"
+          path="/learningpath/:id"
           component={LearningPathDetail}
           isPrivate
         />

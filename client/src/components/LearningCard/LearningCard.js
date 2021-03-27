@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LearningCard = ({ topic }) => {
+const LearningCard = ({ topic, id }) => {
   const classes = useStyles();
   const history = useHistory();
   return (
@@ -29,7 +29,7 @@ const LearningCard = ({ topic }) => {
       <Paper
         className={classes.card}
         onClick={() => {
-          history.push("/learningpath/id");
+          history.push(`/learningpath/${id}`);
         }}
       >
         {topic}

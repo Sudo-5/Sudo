@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, Divider } from "@material-ui/core";
+import { Grid, Typography, Divider, Button } from "@material-ui/core";
 
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -46,6 +46,7 @@ const QuestionBody = ({ question, setQuestion, classes }) => {
   };
   return (
     <>
+      {console.log(question, "question")}
       <Typography variant="h4" gutterBottom className={classes.heading}>
         {question.title}
       </Typography>
@@ -97,6 +98,23 @@ const QuestionBody = ({ question, setQuestion, classes }) => {
             >
               <ReactMarkdown>{question.markdown}</ReactMarkdown>
             </div>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{
+              marginTop: "1rem",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button variant="contained" color="primary">
+              View Code
+            </Button>
+            <Button variant="contained" color="primary">
+              Fork your Copy of Code
+            </Button>
           </Grid>
           <Grid
             item
