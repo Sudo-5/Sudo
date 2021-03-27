@@ -100,7 +100,11 @@ const questionSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true } }
 );
 // questionSchema.index({ data: "text", tags: "text" });
-
+questionSchema.virtual("fileKey").get(function () {
+  if (!this.file.url) return undefined;
+  const [key] = this.file.url.split("/")?.slice(-1);
+  return key;
+});
 const Question = mongoose.model("Question", questionSchema);
 
 module.exports = Question;

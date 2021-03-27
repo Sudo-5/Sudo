@@ -48,6 +48,40 @@ router.get("/all/upvoted", async (req, res) => {
   res.send(questions);
 });
 
+router.get("/test", async (req, res) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET,
+    Key: `code-14a9c0e3-4617-452b-a6a1-67b10433ff51.txt`,
+    // Path:
+    //   "https://awesome-sudo.s3.amazonaws.com/code-14a9c0e3-4617-452b-a6a1-67b10433ff51.txt" /* required */,
+    // Range: "800",
+  };
+  s3.getObject(params, function (err, data) {
+    if (err) console.log(err, err.stack);
+    // an error occurred
+    else console.log(data); // successful response
+    let objectData = data.Body.toString("utf-8");
+    res.send(objectData);
+  });
+});
+
+// * get file for a key(both questions and answers)
+router.get("/file/:key", async (req, res) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET,
+    Key: req.params.key,
+  };
+
+  s3.getObject(params, function (err, data) {
+    if (err) {
+      console.log(err, err.stack);
+      return res.send({ error: "no file found", fileData: undefined });
+    }
+    const objectData = data.Body.toString("utf-8");
+    res.send({ fileData: objectData });
+  });
+});
+
 // * get a question
 router.get("/:id", async (req, res) => {
   const { id: questionId } = req.params;
@@ -62,8 +96,8 @@ router.get("/:id", async (req, res) => {
       },
     })
     .populate("answers.user");
-  console.log(question);
   if (!question) return res.status(400).send({ error: "Invalid question id" });
+
   res.send(question);
 });
 
@@ -98,7 +132,7 @@ router.post("/new", [isAuthenticated, upload], async (req, res) => {
         throw err;
       }
       if (data) {
-        console.log(data, "data");
+        // console.log(data, "data");
         const fileObj = {
           url: data.Location,
           language: req.body.language,
