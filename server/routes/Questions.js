@@ -148,14 +148,51 @@ router.post("/answer/new", isAuthenticated, async (req, res) => {
       .send({ error: error.details[0].message, message: "Invalid answer" });
 
   const question = await Question.findById(value.question);
-  const newAnswer = question.answers.create({
-    user: req.user._id,
-    markdown: value.markdown,
-  });
-  question.answers.push(newAnswer);
-  await question.save();
-  newAnswer.user = req.user;
-  res.send(newAnswer);
+  if (!value.fileBlob) {
+    const newAnswer = question.answers.create({
+      user: req.user._id,
+      markdown: value.markdown,
+    });
+    question.answers.push(newAnswer);
+    question.save();
+    newAnswer.user = req.user;
+    return res.send(newAnswer);
+  } else if (value.fileBlob) {
+    const params = {
+      Bucket: process.env.AWS_BUCKET,
+      Key: `code-${uuidv4()}.txt`, // File name you want to save as in S3
+      Body: value.fileBlob[0].buffer,
+    };
+    s3.upload(params, function (err, data) {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        console.log(data, "data");
+        const fileObj = {
+          url: data.Location,
+          language: req.body.language,
+        };
+        const newAnswer = question.answers.create({
+          user: req.user._id,
+          markdown: value.markdown,
+          file: fileObj,
+        });
+        question.answers.push(newAnswer);
+        question.save();
+        newAnswer.user = req.user;
+        return res.send(newAnswer);
+      }
+    });
+  }
+  // const newAnswer = question.answers.create({
+  //   user: req.user._id,
+  //   markdown: value.markdown,
+  // });
+  // question.answers.push(newAnswer);
+  // await question.save();
+  // newAnswer.user = req.user;
+  // res.send(newAnswer);
 });
 
 //* update answer

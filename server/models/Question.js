@@ -39,6 +39,16 @@ const answerSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    file: {
+      url: {
+        type: String,
+        default: null,
+      },
+      language: {
+        type: String,
+        default: null,
+      },
+    },
     // downVotes: {
     //   type: Number,
     //   default: 0,
