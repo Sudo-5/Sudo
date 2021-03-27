@@ -15,6 +15,8 @@ const newAnswer = (body) => {
   const schema = Joi.object({
     markdown: Joi.string().required(),
     question: Joi.objectId().required(),
+    fileBlob: Joi.any(),
+    language: Joi.string(),
   });
   return schema.validate(body);
 };
